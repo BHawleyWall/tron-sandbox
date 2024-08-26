@@ -1,0 +1,24 @@
+[package]
+name = "tron-cli"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "tron"
+path = "src/main.rs"
+
+[lib]
+name = "tron_lib"
+path = "src/lib.rs"
+
+[dependencies]
+clap = { version = "4.5.13", features = ["derive"] }
+chrono = "0.4.38"
+anyhow = "1.0.86"
+rayon = "1.10.0"
+dotenvy = { version = "0.15.7", features = ["clap", "cli"] }
+
+[dev-dependencies]
+assert_cmd = "2.0.15"
+predicates = "3.1.2"
+pretty_assertions = "1.4.0"

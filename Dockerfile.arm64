@@ -1,0 +1,30 @@
+# syntax=docker/dockerfile:1.2
+FROM lukemathwalker/cargo-chef:latest-rust-alpine AS chef
+WORKDIR /app
+
+
+FROM chef AS planner
+COPY . .
+WORKDIR /app
+RUN cargo chef prepare --recipe-path recipe.json
+
+
+FROM chef AS builder
+COPY --from=planner /app/recipe.json recipe.json
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/app/target \
+    cargo chef cook --release --recipe-path recipe.json
+COPY . .
+WORKDIR /app
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/app/target \
+    cargo build --release && \
+    cp /app/target/release/tron-cli /usr/local/bin/tron-cli
+
+
+FROM scratch AS runtime
+COPY --from=builder /usr/local/bin/tron-cli /usr/local/bin/tron-cli
+
+WORKDIR /app
+
+CMD ["/usr/local/bin/tron-cli"]
