@@ -1,6 +1,8 @@
 use std::process::ExitCode;
 
-use clap::Parser;
+use anyhow::Result;
+use clap::{ArgAction, Parser};
+use tron_lib::dummy;
 
 const SHASTA_TESTNET_FULLNODE: &str = "grpc.shasta.trongrid.io:50051";
 const SHASTA_TESTNET_SOLIDITY: &str = "grpc.shasta.trongrid.io:50052";
@@ -20,12 +22,16 @@ struct Cli {
     /// JSON-RPC endpoint
     #[clap(short, long, default_value = SHASTA_TESTNET_JSONRPC)]
     jsonrpc: String,
+
+    /// Verbosity level. Pass up to four times for more verbosity.
+    #[clap(short, long, action=ArgAction::Count)]
+    verbose: u8,
 }
 
-fn run_cli() -> Result<(), ()> {
+fn run_cli() -> Result<()> {
     let args = Cli::parse();
 
-    println!("{:?}", args);
+    dummy(args.verbose)?;
 
     Ok(())
 }
