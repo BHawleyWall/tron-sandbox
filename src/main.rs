@@ -23,7 +23,7 @@ struct Cli {
     #[clap(short, long, default_value = SHASTA_TESTNET_JSONRPC)]
     jsonrpc: String,
 
-    /// Verbosity level. Pass up to four times for more verbosity.
+    /// Verbosity level. Repeat up to four times for more verbosity.
     #[clap(short, long, action=ArgAction::Count)]
     verbose: u8,
 }
