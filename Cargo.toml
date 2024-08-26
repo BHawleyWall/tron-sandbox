@@ -12,6 +12,7 @@ name = "tron_lib"
 path = "src/lib.rs"
 
 [dependencies]
+anychain-tron = "0.2.6"
 anyhow = "1.0.86"
 chrono = "0.4.38"
 clap = { version = "4.5.13", features = ["derive"] }
