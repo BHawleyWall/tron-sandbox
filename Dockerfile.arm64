@@ -10,6 +10,9 @@ RUN cargo chef prepare --recipe-path recipe.json
 
 
 FROM chef AS builder
+ARG BINARY_NAME=tron
+RUN apk update && apk upgrade
+RUN apk add protobuf-dev
 COPY --from=planner /app/recipe.json recipe.json
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/app/target \
@@ -19,12 +22,13 @@ WORKDIR /app
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/app/target \
     cargo build --release && \
-    cp /app/target/release/tron-cli /usr/local/bin/tron-cli
+    cp /app/target/release/${BINARY_NAME} /usr/local/bin/${BINARY_NAME}
 
 
 FROM scratch AS runtime
-COPY --from=builder /usr/local/bin/tron-cli /usr/local/bin/tron-cli
+ARG BINARY_NAME=tron
+COPY --from=builder /usr/local/bin/${BINARY_NAME} /usr/local/bin/${BINARY_NAME}
 
 WORKDIR /app
 
-CMD ["/usr/local/bin/tron-cli"]
+CMD ["/usr/local/bin/${BINARY_NAME}"]

@@ -7,8 +7,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 "protocol/core/Tron.proto",
                 "protocol/core/Discover.proto",
                 "protocol/core/TronInventoryItems.proto",
+                "protocol/api/api.proto",
             ],
-            &["protocol"],
+            &["googleapis", "protocol"],
         )?;
     Ok(())
 }
