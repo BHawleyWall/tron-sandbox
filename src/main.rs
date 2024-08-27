@@ -4,8 +4,8 @@ use anyhow::{anyhow, Result};
 use clap::{ArgAction, Parser, Subcommand};
 use tron_lib::Runtime;
 
-const SHASTA_TESTNET_FULLNODE: &str = "grpc.shasta.trongrid.io:50051";
-const SHASTA_TESTNET_SOLIDITY: &str = "grpc.shasta.trongrid.io:50052";
+const SHASTA_TESTNET_FULLNODE: &str = "grpc://grpc.shasta.trongrid.io:50051";
+const SHASTA_TESTNET_SOLIDITY: &str = "grpc://grpc.shasta.trongrid.io:50052";
 const SHASTA_TESTNET_JSONRPC: &str = "https://api.shasta.trongrid.io/jsonrpc";
 
 #[derive(Parser, Debug)]
