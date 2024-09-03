@@ -22,13 +22,13 @@ WORKDIR /app
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/app/target \
     cargo build --release && \
-    cp /app/target/release/${BINARY_NAME} /usr/local/bin/${BINARY_NAME}
+    cp /app/target/release/tron /usr/local/bin/tron
 
 
 FROM scratch AS runtime
 ARG BINARY_NAME=tron
-COPY --from=builder /usr/local/bin/${BINARY_NAME} /usr/local/bin/${BINARY_NAME}
+COPY --from=builder /usr/local/bin/tron /usr/local/bin/tron
 
 WORKDIR /app
 
-CMD ["/usr/local/bin/${BINARY_NAME}"]
+CMD ["/usr/local/bin/tron"]

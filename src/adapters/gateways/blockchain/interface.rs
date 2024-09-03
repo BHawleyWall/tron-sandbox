@@ -16,30 +16,28 @@ use tron_protos::wallet_client::WalletClient;
 
 #[derive(Debug)]
 pub struct TronClient {
-    fullnode: String,
+    fullnode: WalletClient<tonic::transport::Channel>,
     solidity: String,
     jsonrpc: String,
-    client: WalletClient<tonic::transport::Channel>,
 }
 
 impl TronClient {
     #[instrument]
-    pub async fn new(fullnode: String, solidity: String, jsonrpc: String) -> Self {
-        trace!("Creating new Tron client with endpoints: {fullnode}, {solidity}, {jsonrpc}");
+    pub async fn new(fullnode_url: String, solidity_url: String, jsonrpc_url: String) -> Self {
+        trace!("Creating new Tron client with endpoints: {fullnode_url}, {solidity_url}, {jsonrpc_url}");
 
-        let client = WalletClient::connect(fullnode.to_owned())
+        let fullnode = WalletClient::connect(fullnode_url.to_owned())
             .await
             .expect("Failed to connect to fullnode endpoint");
 
         Self {
             fullnode,
-            solidity,
-            jsonrpc,
-            client,
+            solidity: solidity_url,
+            jsonrpc: jsonrpc_url,
         }
     }
 
-    pub fn fullnode(&self) -> &str {
+    pub fn fullnode(&self) -> &WalletClient<tonic::transport::Channel> {
         &self.fullnode
     }
 
